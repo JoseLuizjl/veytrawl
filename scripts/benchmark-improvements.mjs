@@ -24,7 +24,7 @@ try {
       );
       samples.push(performance.now() - start);
       if (name === 'dom') assert.ok(JSON.parse(out.stdout).nodes.length);
-      else assert.equal(out.stdout.trim(), '0.3.0-alpha.0');
+      else assert.equal(out.stdout.trim(), '1.0.0');
     }
     results.push({ name, samples, median: [...samples].sort((a, b) => a - b)[3] });
   }
