@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve, relative, isAbsolute } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { waitForPublication } from './lib/publication.mjs';
 const project = JSON.parse(await readFile('package.json', 'utf8'));
 assert.equal(process.env.GITHUB_ACTIONS, 'true', 'Use the manually dispatched publish workflow.');
 assert.equal(
@@ -54,13 +55,8 @@ const published = spawnSync(
   { stdio: 'inherit' },
 );
 assert.equal(published.status, 0, 'npm publication failed.');
-const response = await fetch(`https://registry.npmjs.org/${project.name}/${project.version}`, {
-  signal: AbortSignal.timeout(30000),
-});
-assert.equal(response.status, 200);
-const metadata = await response.json();
-assert.equal(
-  metadata.dist.integrity,
+await waitForPublication(
+  `https://registry.npmjs.org/${project.name}/${project.version}`,
   'sha512-' +
     createHash('sha512')
       .update(await readFile(artifact))

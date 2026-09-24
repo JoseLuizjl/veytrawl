@@ -1,6 +1,6 @@
 # Security and privacy
 
-Veytrawl is an alpha library and CLI, not a security sandbox. Use the latest verified release, review the content and destinations you process, and apply operating-system isolation when running untrusted sites. No dependency scan or automated test proves an absence of vulnerabilities.
+Veytrawl is a web extraction library and CLI. It is not a security sandbox. Use the latest verified release, review the content and destinations you process, and apply operating-system isolation when running untrusted sites. No dependency scan or automated test proves an absence of vulnerabilities.
 
 ## Report a vulnerability
 
@@ -12,7 +12,7 @@ There is no application telemetry or analytics endpoint. Ordinary operation cont
 
 Passwords, raw form values, and editable text are excluded from default semantic snapshots. Explicit accessibility-tree extraction can expose additional page content. CLI errors redact the local home directory and common secret patterns. Provider input redacts common tokens, sensitive URL parameters, and email addresses. Redaction is best effort: names, arbitrary identifiers, unusual credentials, and sensitive ordinary text may remain. Review data before enabling remote inference or sharing output.
 
-Snapshots, URLs, selector identities, Watch events, and exports intentionally retain useful page content and may contain personal information. SQLite data is not encrypted. In the 0.3 development version, event retention is bounded per watch and reset removes one watch identity. These are logical deletions, not secure erasure of database pages or backups. New database and export files use owner-only POSIX permissions; Windows uses inherited directory ACLs. Existing directory permissions are not rewritten. Store data in a private directory and protect backups. Source and npm allowlists exclude local state, credentials, generated reports, and source maps. `.env.example` must remain empty of credentials.
+Snapshots, URLs, selector identities, Watch events, and exports intentionally retain useful page content and may contain personal information. SQLite data is not encrypted. Event retention is bounded per watch and reset removes one watch identity. These are logical deletions, not secure erasure of database pages or backups. New database and export files use owner-only POSIX permissions; Windows uses inherited directory ACLs. Existing directory permissions are not rewritten. Store data in a private directory and protect backups. Source and npm allowlists exclude local state, credentials, generated reports, and source maps. `.env.example` must remain empty of credentials.
 
 ## Network and browser boundaries
 

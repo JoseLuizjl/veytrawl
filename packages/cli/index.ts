@@ -97,7 +97,7 @@ async function main() {
     },
   });
   if (values.version) {
-    console.log('0.3.0-alpha.0');
+    console.log('1.0.0');
     return;
   }
   if (values.help || !positionals.length || positionals[0] === 'help') {
