@@ -43,6 +43,7 @@ jobs:
       - run: npm run check
       - run: npm run format:check
       - run: npm run verify:source
+      - run: node --test scripts/verify-publishing.mjs
       - run: npm audit
       - run: npm test
       - run: npm run verify:package
