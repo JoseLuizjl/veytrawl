@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.3.0-alpha.0 - unreleased
+## 1.0.0 - 2026-09-24
+
+First stable release of the SDK and CLI. The changes below were developed after 0.2.0-alpha.0; no 0.3 alpha was published.
 
 - Add bounded parallel discovery with 1 to 8 workers, shared request pacing, path-prefix filters, queue/score controls, and progress callbacks.
 - Deduplicate candidate URLs before ranking and preserve origin, redirect, robots, depth, and page limits with parallel fetching.
@@ -9,7 +11,9 @@
 - Retain at most 1,000 events per watch by default; configure `watchStore.maxEvents` or `watch --max-events`. A value of zero keeps live change detection without stored history.
 - Open Watch and selector databases only on first use. Close is idempotent, and closed SDK clients reject further operations.
 - Reject command options that were previously silently ignored, including browser-only waits without browser rendering.
-- Add a crawl benchmark, regression coverage, a manually dispatched OIDC publishing workflow gated by Windows, Linux, macOS, and Bun checks.
+- Add a crawl benchmark, regression coverage, and a manually dispatched OIDC publishing workflow gated by Windows, Linux, macOS, and Bun checks.
+- Remove demonstration GIFs and local documentation from the package; consolidate usage guidance in the README.
+- Publish the source under the existing MIT license and enable private vulnerability reporting.
 
 Existing Watch snapshots and selector caches remain compatible. Retention applies when each watch is next checked; it does not immediately prune unrelated watches. Strict CLI validation can require removing formerly ignored flags.
 

@@ -2,22 +2,20 @@
 
 Veytrawl is a command-line tool and TypeScript library for extracting web content, crawling relevant pages, finding interactive elements, and monitoring changes. Use it to search documentation, export page content, or turn changes into RSS and Atom feeds. Core features work without an API key or model.
 
-**Published: alpha 0.2.0 | Development: 0.3.0-alpha.0** | **Node.js 24+** | **TypeScript SDK + CLI** | [**MIT license**](LICENSE)
+**Version 1.0.0** | **Node.js 24+** | **TypeScript SDK + CLI** | [**MIT license**](LICENSE)
 
 [Quick start](#quick-start) | [Features](#what-you-can-do) | [Usage](#usage) | [SDK](#typescript-sdk) | [Optional AI](#optional-ai) | [Troubleshooting](#troubleshooting) | [Development](#development)
 
 ---
 
-> **Development checkout:** Parallel crawl controls, Watch history/reset, and configurable retention below are new in the unpublished 0.3 development version. To use them now, run `npm ci`, `npm run build`, and replace `veytrawl` with `node dist/packages/cli/index.js`. The npm `alpha` tag currently installs 0.2.0-alpha.0.
-
 ## Quick start
 
-> **Alpha release:** Install the `alpha` tag to try version `0.2.0-alpha.0`. Node.js 24 or later is required.
+Node.js 24 or later is required.
 
 ### 1. Install the CLI
 
 ```bash
-npm install --global --ignore-scripts veytrawl@alpha
+npm install --global --ignore-scripts veytrawl
 veytrawl --version
 ```
 
@@ -75,10 +73,10 @@ npm run verify:package
 The command reports the path to the verified `.tgz` file. Copy that file into your application's folder, then install it:
 
 ```bash
-npm install --ignore-scripts ./veytrawl-0.3.0-alpha.0.tgz
+npm install --ignore-scripts ./veytrawl-1.0.0.tgz
 ```
 
-Use `npm install --global --ignore-scripts ./veytrawl-0.3.0-alpha.0.tgz` for a global CLI installation from that archive.
+Use `npm install --global --ignore-scripts ./veytrawl-1.0.0.tgz` for a global CLI installation from that archive.
 
 When running directly from source, replace `veytrawl` in the examples below with `node dist/packages/cli/index.js`.
 
@@ -119,7 +117,7 @@ Veytrawl prioritizes links using their names, URLs, and context. Crawls respect 
 
 Use `--depth` to set the maximum link depth and `--delay-ms` to adjust pacing. A site's robots crawl delay still takes precedence.
 
-In the 0.3 development version, limit discovery to useful paths and overlap requests when appropriate:
+Limit discovery to useful paths and overlap requests when appropriate:
 
 ```bash
 veytrawl crawl https://nodejs.org/api/ --goal "HTTP server" --max-pages 10 --concurrency 3 --include-path /api/ --exclude-path /api/deprecations --progress
@@ -163,7 +161,7 @@ Use `--scope` to watch a specific entity, `--ignore-text` to exclude chosen text
 
 ### Review or reset saved changes
 
-The 0.3 development version adds offline history management:
+Read, export, or reset saved changes without contacting the monitored site:
 
 ```bash
 veytrawl history https://example.com --for all --limit 20
@@ -204,7 +202,7 @@ With `--output`, stdout stays empty and the file holds the latest emitted result
 Install the SDK in your application:
 
 ```bash
-npm install --ignore-scripts veytrawl@alpha
+npm install --ignore-scripts veytrawl
 ```
 
 Then import `Veytrawl`:
@@ -226,7 +224,7 @@ try {
 }
 ```
 
-The SDK exposes the same core workflows through `extract()`, `discover()`, `locate()`, `watch()`, and `feed()`. The 0.3 development SDK also exposes `history()` and `resetWatch()`.
+The SDK exposes the same core workflows through `extract()`, `discover()`, `locate()`, `watch()`, `feed()`, `history()`, and `resetWatch()`.
 
 <details>
 <summary><strong>Discover documentation</strong></summary>
@@ -309,7 +307,7 @@ SDK options include `scope`, `ignoreText`, and `ignoreTimestamps`. Changing thes
 
 </details>
 
-### History and progress in the development SDK
+### History and progress
 
 ```ts
 import { Veytrawl } from 'veytrawl';
@@ -339,11 +337,17 @@ Call `await web.resetWatch(options)` only when you intend to discard that watch'
 
 ### Storage
 
-The SDK uses in-memory storage unless you supply `storage`. In 0.3, databases open on first use, so extraction and crawling do not create state files. The CLI persists Watch and selector state in `.veytrawl/watch.sqlite`; choose another location with `--db`.
+The SDK uses in-memory storage unless you supply `storage`. Databases open on first use, so extraction and crawling do not create state files. The CLI persists Watch and selector state in `.veytrawl/watch.sqlite`; choose another location with `--db`.
 
 Call `close()` after pending operations finish; calling it repeatedly is safe. Closed instances cannot be reused.
 
 Configure selector caching with `selectorCache: { ttlMs, maxEntries, path }`. Defaults are seven days and 1,000 entries. Finish pending operations before calling `close()`.
+
+### Compatibility
+
+Import from `veytrawl`, `veytrawl/dom`, or `veytrawl/providers/jev`; other internal file paths are not public APIs. Public method signatures, documented defaults, and persisted data formats follow semantic versioning from 1.0 onward. Additive JSON fields may appear in minor releases; consumers should tolerate them. Security fixes may tighten input validation and are documented in the changelog.
+
+Discovery returns per-page errors alongside successful pages. The seed and failed requests count toward the page budget. Parallel discovery may visit pages in a different order; the same origin, robots, path, and pacing rules apply. Cancel operations with an `AbortSignal`; custom providers may finish their own work afterward, but late results cannot update a baseline or schedule new pages.
 
 ## Optional AI
 

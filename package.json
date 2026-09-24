@@ -1,6 +1,6 @@
 {
   "name": "veytrawl",
-  "version": "0.3.0-alpha.0",
+  "version": "1.0.0",
   "description": "Extract readable web content, discover relevant pages, locate interactive elements, and watch meaningful changes.",
   "type": "module",
   "license": "MIT",
@@ -68,7 +68,7 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "tag": "alpha"
+    "tag": "latest"
   },
   "homepage": "https://github.com/JoseLuizjl/veytrawl#readme",
   "keywords": [

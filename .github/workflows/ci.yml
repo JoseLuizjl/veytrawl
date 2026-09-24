@@ -24,9 +24,26 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npx --no-install playwright install --with-deps chromium
+      - name: Allow Chromium sandbox namespaces on Ubuntu
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          task_browser_cache="$(node -e "const {chromium}=require('playwright');const {dirname}=require('node:path');process.stdout.write(dirname(dirname(dirname(chromium.executablePath()))))")"
+          task_profile="$(mktemp)"
+          printf 'abi <abi/4.0>,\ninclude <tunables/global>\n' > "$task_profile"
+          task_index=0
+          for task_browser in "$task_browser_cache"/chromium-*/chrome-linux64/chrome "$task_browser_cache"/chromium_headless_shell-*/chrome-headless-shell-linux64/chrome-headless-shell; do
+            test -x "$task_browser"
+            task_index=$((task_index + 1))
+            printf 'profile veytrawl-ci-%s "%s" flags=(unconfined) { userns, }\n' "$task_index" "$task_browser" >> "$task_profile"
+          done
+          sudo apparmor_parser -r "$task_profile"
+          rm "$task_profile"
       - run: npm run check
       - run: npm run format:check
       - run: npm run verify:source
+      - run: node --test scripts/verify-publishing.mjs
       - run: npm audit
       - run: npm test
       - run: npm run verify:package
