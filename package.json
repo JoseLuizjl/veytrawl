@@ -1,0 +1,91 @@
+{
+  "name": "veytrawl",
+  "version": "0.3.0-alpha.0",
+  "description": "Extract readable web content, discover relevant pages, locate interactive elements, and watch meaningful changes.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "veytrawl": "./dist/packages/cli/index.js"
+  },
+  "main": "./dist/packages/core/index.js",
+  "types": "./dist/packages/core/index.d.ts",
+  "exports": {
+    ".": "./dist/packages/core/index.js",
+    "./dom": "./dist/packages/dom/index.js",
+    "./providers/jev": "./dist/packages/providers/jev/index.js"
+  },
+  "files": [
+    "dist/packages/**/*.js",
+    "dist/packages/**/*.d.ts",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test --test-concurrency=1 dist/tests/*.test.js",
+    "test:bun": "npm run build && bun test --timeout 30000 ./dist/tests/engine.test.js ./dist/tests/cli-provider.test.js ./dist/tests/hardening.test.js ./dist/tests/improvements.test.js ./dist/tests/release.test.js",
+    "demo": "npm run build && node dist/examples/demo.js",
+    "benchmark": "npm run build && node dist/benchmarks/run.js",
+    "benchmark:performance": "npm run build && node scripts/benchmark-performance.mjs",
+    "evaluate": "npm run build && node dist/benchmarks/evaluate.js",
+    "evaluate:offline": "npm run build && node dist/benchmarks/evaluate.js --offline",
+    "verify:embeddings": "npm run build && node scripts/verify-embeddings.mjs",
+    "verify:embeddings:offline": "npm run build && node scripts/verify-embeddings.mjs --offline",
+    "verify:jev": "npm run build && node --env-file-if-exists=.env scripts/verify-jev.mjs",
+    "verify:package": "npm run build && node scripts/verify-package.mjs",
+    "benchmark:improvements": "npm run build && node scripts/benchmark-improvements.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify:source": "node scripts/verify-source.mjs",
+    "release:check": "npm run check && npm run format:check && npm run verify:source && npm test && npm run verify:package && npm audit",
+    "benchmark:crawl": "npm run build && node scripts/benchmark-crawl.mjs",
+    "release:publish": "node scripts/publish-release.mjs"
+  },
+  "dependencies": {
+    "@typesafe-ai/sdk": "0.6.0",
+    "ipaddr.js": "2.5.0",
+    "parse5": "8.0.1",
+    "playwright": "1.63.0",
+    "robots-parser": "3.0.1",
+    "undici": "7.29.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.6",
+    "prettier": "3.9.9",
+    "typescript": "5.9.3"
+  },
+  "optionalDependencies": {
+    "@huggingface/transformers": "4.3.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "alpha"
+  },
+  "homepage": "https://github.com/JoseLuizjl/veytrawl#readme",
+  "keywords": [
+    "web",
+    "scraping",
+    "crawler",
+    "semantic",
+    "playwright",
+    "monitoring",
+    "cli",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseLuizjl/veytrawl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoseLuizjl/veytrawl/issues"
+  }
+}

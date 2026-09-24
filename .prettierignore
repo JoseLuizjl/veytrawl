@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.veytrawl/
+.semweb/
+artifacts/
+package-lock.json
+%SystemDrive%/
+
+docs/
+
+.codex/
+
+.agents/
