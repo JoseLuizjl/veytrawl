@@ -28,6 +28,8 @@ Never commit environment files, API keys, personal data, database files, depende
 
 Generated output belongs in ignored directories. Do not submit local planning documents, agent configuration, prompts, editor state, or model caches.
 
+The Ubuntu CI runner loads an AppArmor profile allowing user namespaces for the downloaded Chromium executables. Chromium's sandbox remains enabled; this runner setup does not change the library's defaults or the host-wide namespace policy. See [Chromium's AppArmor guidance](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md).
+
 ## Releases
 
 `npm run release:check` checks a release without publishing it. Review the archive reported by `npm run verify:package`; it should contain compiled runtime files, TypeScript declarations, package metadata, the license, and the root project guides.
