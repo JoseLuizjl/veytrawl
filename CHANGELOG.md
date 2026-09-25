@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 - 2026-09-24
+
+- Update Undici to 8.10.2 and upgrade the pinned checkout and Node setup actions.
+- Keep npm and local formatter configuration out of the source repository; share formatting settings through package metadata.
+- Consolidate contributor and security guidance in the README and add a repository-specific AGENTS.md.
+- Exclude local-only folders through private Git exclusions and retain strict source/package allowlists.
+- Wait for npm processing before verifying a newly accepted release.
+
 ## 1.0.0 - 2026-09-24
 
 First stable release of the SDK and CLI. The changes below were developed after 0.2.0-alpha.0; no 0.3 alpha was published.

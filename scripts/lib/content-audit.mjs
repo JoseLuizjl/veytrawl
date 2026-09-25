@@ -40,36 +40,22 @@ export function assertPublicContent(name, content) {
 }
 export function assertPackagePath(path) {
   if (/^dist\/packages\/[a-z0-9_/-]+\.(?:js|d\.ts)$/i.test(path)) return;
-  if (
-    [
-      'package.json',
-      'README.md',
-      'LICENSE',
-      'SECURITY.md',
-      'CONTRIBUTING.md',
-      'CHANGELOG.md',
-    ].includes(path)
-  )
-    return;
+  if (['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md'].includes(path)) return;
   throw new Error(`Unexpected published file: ${path}`);
 }
 
 export function assertSourcePath(path) {
   if (
     [
+      'AGENTS.md',
       '.env.example',
       '.gitattributes',
       '.gitignore',
-      '.npmrc',
-      '.prettierignore',
-      '.prettierrc.json',
       'CHANGELOG.md',
-      'CONTRIBUTING.md',
       'LICENSE',
       'package-lock.json',
       'package.json',
       'README.md',
-      'SECURITY.md',
       'tsconfig.json',
     ].includes(path)
   )

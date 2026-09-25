@@ -1,6 +1,6 @@
 {
   "name": "veytrawl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extract readable web content, discover relevant pages, locate interactive elements, and watch meaningful changes.",
   "type": "module",
   "license": "MIT",
@@ -22,8 +22,6 @@
     "dist/packages/**/*.d.ts",
     "README.md",
     "LICENSE",
-    "SECURITY.md",
-    "CONTRIBUTING.md",
     "CHANGELOG.md"
   ],
   "scripts": {
@@ -41,10 +39,10 @@
     "verify:jev": "npm run build && node --env-file-if-exists=.env scripts/verify-jev.mjs",
     "verify:package": "npm run build && node scripts/verify-package.mjs",
     "benchmark:improvements": "npm run build && node scripts/benchmark-improvements.mjs",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "prettier --write packages tests scripts examples benchmarks .github README.md CHANGELOG.md AGENTS.md package.json package-lock.json tsconfig.json",
+    "format:check": "prettier --check packages tests scripts examples benchmarks .github README.md CHANGELOG.md AGENTS.md package.json package-lock.json tsconfig.json",
     "verify:source": "node scripts/verify-source.mjs",
-    "release:check": "npm run check && npm run format:check && npm run verify:source && npm test && npm run verify:package && npm audit",
+    "release:check": "npm run check && npm run format:check && npm run verify:source && node --test scripts/verify-publishing.mjs && npm test && npm run verify:package && npm audit",
     "benchmark:crawl": "npm run build && node scripts/benchmark-crawl.mjs",
     "release:publish": "node scripts/publish-release.mjs"
   },
@@ -87,5 +85,10 @@
   },
   "bugs": {
     "url": "https://github.com/JoseLuizjl/veytrawl/issues"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "all"
   }
 }

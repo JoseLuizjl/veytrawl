@@ -11,6 +11,13 @@ import {
   assertSourcePath,
 } from './lib/content-audit.mjs';
 const ignored = new Set([
+  '.npmrc',
+  '.prettierignore',
+  '.prettierrc.json',
+  '.prompts',
+  'prompts',
+  'CLAUDE.md',
+  'GEMINI.md',
   'docs',
   'node_modules',
   'dist',
@@ -44,7 +51,14 @@ assert.ok(contentFindings('api' + 'key_' + 'a'.repeat(70)).includes('credential'
 assert.ok(contentFindings('person' + '@' + 'private-mail.test').includes('unredacted email'));
 assert.throws(() => assertPackagePath('.env.production'));
 assert.throws(() => assertPackagePath('dist/packages/core/index.js.map'));
+assert.throws(() => assertPackagePath('AGENTS.md'));
+assertSourcePath('AGENTS.md');
 for (const path of [
+  '.npmrc',
+  '.prettierignore',
+  '.prettierrc.json',
+  'CONTRIBUTING.md',
+  'SECURITY.md',
   'docs/guide.md',
   '.codex/config.toml',
   '.agents/notes.md',
@@ -105,21 +119,26 @@ for (const section of ['dependencies', 'devDependencies', 'optionalDependencies'
       /^\d+\.\d+\.\d+(?:-[\w.]+)?$/,
       'Direct dependency must use an exact version',
     );
-const npmrc = await readFile('.npmrc', 'utf8');
-for (const setting of [
-  'registry=https://registry.npmjs.org/',
-  'strict-ssl=true',
-  'ignore-scripts=true',
-  'save-exact=true',
-])
-  assert.ok(npmrc.split(/\r?\n/).includes(setting), `Missing npm setting: ${setting}`);
+assert.equal(project.publishConfig.registry, 'https://registry.npmjs.org/');
+for (const dependency of Object.values(lock.packages)) {
+  if (dependency.resolved)
+    assert.ok(
+      dependency.resolved.startsWith('https://registry.npmjs.org/'),
+      'Lockfile dependency must use the official registry',
+    );
+}
+const workflow = await readFile('.github/workflows/ci.yml', 'utf8');
+assert.ok(
+  workflow.includes('npm ci --ignore-scripts'),
+  'CI must disable dependency install scripts',
+);
 console.log(
   JSON.stringify(
     {
       sourceFiles: files.length,
       commentFreeCodeFiles: codeFiles,
       credentialAndPrivacyChecks: 'passed',
-      npmProjectConfiguration: 'passed',
+      npmRegistryAndInstallChecks: 'passed',
     },
     null,
     2,
