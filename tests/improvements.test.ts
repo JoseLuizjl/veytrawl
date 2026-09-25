@@ -134,7 +134,7 @@ test('CLI help/version work without installed dependencies', async () => {
     await writeFile(path, await readFile('dist/packages/cli/index.js', 'utf8'));
     assert.equal(
       (await exec(process.execPath, [path, '--version'], { windowsHide: true })).stdout.trim(),
-      '1.0.0',
+      '1.0.1',
     );
     assert.match(
       (await exec(process.execPath, [path, '--help'], { windowsHide: true })).stdout,

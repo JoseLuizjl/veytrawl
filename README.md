@@ -2,7 +2,7 @@
 
 Veytrawl is a command-line tool and TypeScript library for extracting web content, crawling relevant pages, finding interactive elements, and monitoring changes. Use it to search documentation, export page content, or turn changes into RSS and Atom feeds. Core features work without an API key or model.
 
-**Version 1.0.0** | **Node.js 24+** | **TypeScript SDK + CLI** | [**MIT license**](LICENSE)
+**Version 1.0.1** | **Node.js 24+** | **TypeScript SDK + CLI** | [**MIT license**](LICENSE)
 
 [Quick start](#quick-start) | [Features](#what-you-can-do) | [Usage](#usage) | [SDK](#typescript-sdk) | [Optional AI](#optional-ai) | [Troubleshooting](#troubleshooting) | [Development](#development)
 
@@ -73,10 +73,10 @@ npm run verify:package
 The command reports the path to the verified `.tgz` file. Copy that file into your application's folder, then install it:
 
 ```bash
-npm install --ignore-scripts ./veytrawl-1.0.0.tgz
+npm install --ignore-scripts ./veytrawl-1.0.1.tgz
 ```
 
-Use `npm install --global --ignore-scripts ./veytrawl-1.0.0.tgz` for a global CLI installation from that archive.
+Use `npm install --global --ignore-scripts ./veytrawl-1.0.1.tgz` for a global CLI installation from that archive.
 
 When running directly from source, replace `veytrawl` in the examples below with `node dist/packages/cli/index.js`.
 
@@ -398,9 +398,15 @@ Private and reserved network destinations are blocked by default. For trusted lo
 
 Snapshots, feeds, exports, and SQLite databases can contain sensitive page content. Keep them private. Browser mode executes website scripts; service deployments need operating-system isolation in addition to the managed browser controls.
 
-Read the [security policy](SECURITY.md) for data handling, network boundaries, and vulnerability reporting.
+Report vulnerabilities through [GitHub private vulnerability reporting](https://github.com/JoseLuizjl/veytrawl/security/advisories/new). Include a minimal reproduction and the affected version, without credentials or private page content. Use public issues for ordinary bugs.
+
+Managed browsers use a fresh context and enable Chromium's sandbox. Custom fetchers and caller-created browser pages are the caller's responsibility. SQLite data is not encrypted; reset and retention perform logical deletion rather than secure erasure. On Windows, file access follows the containing directory's ACLs.
+
+Install dependencies with `--ignore-scripts`; browser installation is a separate explicit step. The package has no install hooks. CI uses locked dependencies, reviews the packed file list, and checks for known vulnerabilities. npm releases use trusted publishing with provenance.
 
 ## Development
+
+Use Node.js 24 or later. Install the locked dependencies with `npm ci --ignore-scripts`, and install Chromium with `npx --no-install playwright install chromium` for browser tests. Keep source code and user-facing text in English. Include regression coverage for behavior or security changes, and preserve the MIT license.
 
 ```bash
 npm run format:check
@@ -425,8 +431,7 @@ Run `npm run demo` to exercise browser discovery, selector recovery, and change 
 
 - [Source and issues](https://github.com/JoseLuizjl/veytrawl)
 - [npm package](https://www.npmjs.com/package/veytrawl)
-- [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
-- [Security policy](SECURITY.md)
+- [Report a vulnerability](https://github.com/JoseLuizjl/veytrawl/security/advisories/new)
 
 Released under the [MIT license](LICENSE).
