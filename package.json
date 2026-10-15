@@ -61,7 +61,7 @@
     "typescript": "5.9.3"
   },
   "optionalDependencies": {
-    "@huggingface/transformers": "4.3.0"
+    "@huggingface/transformers": "4.3.1"
   },
   "publishConfig": {
     "access": "public",
